@@ -18,6 +18,9 @@ public class RunQuery {
     public static ResultSet resultSet=null;
     public static Statement st =null;
     public boolean openRDSConnection(){
+        if(null!=con){
+            closeConnection();
+        }
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(url);
@@ -47,6 +50,18 @@ public class RunQuery {
              return false;
         }
 
+    }
+    public ResultSet runSelect(String query){
+        try {
+            st = con.createStatement();
+            Log.v(TAG, "Query is "+query);
+            resultSet=st.executeQuery(query);
+            Log.v(TAG, "result set is  "+resultSet.toString());
+        }catch (SQLException se){
+            closeConnection();
+            return null;
+        }
+        return resultSet;
     }
     public void closeConnection(){
         try {

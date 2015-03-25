@@ -10,6 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
+
+import com.idbms.s_box.amazonrds.GetGroups;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -21,7 +24,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button newGroup= (Button)findViewById(R.id.newgroup);
+        new GetGroups("surapanenipraveen@gmail.com",this,(ListView)this.findViewById(R.id.groups_list)).execute();
+        /*Button newGroup= (Button)findViewById(R.id.newgroup);
         newGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -29,9 +33,8 @@ public class MainActivity extends ActionBarActivity {
                 Intent i = new Intent(getApplicationContext(),NewGroup.class);
                 startActivity(i);
             }
-        });
+        });*/
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -42,16 +45,17 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                return true;
+            case R.id.action_settings:
+                return true;
+            case R.id.new_group:
+                Log.v(TAG, "search onclick");
+                Intent i = new Intent(getApplicationContext(),NewGroup.class);
+                startActivity(i);
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }

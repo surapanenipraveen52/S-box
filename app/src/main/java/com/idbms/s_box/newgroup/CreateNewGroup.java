@@ -1,11 +1,14 @@
 package com.idbms.s_box.newgroup;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
 
 import com.idbms.s_box.MainActivity;
+import com.idbms.s_box.NewGroup;
 import com.idbms.s_box.amazonrds.RunQuery;
 import com.idbms.s_box.amazons3.CreateBucket;
 
@@ -19,12 +22,23 @@ public class CreateNewGroup extends AsyncTask {
     Context mContext;
     String groupName;
     List<String> membersList;
+    ProgressDialog pd;
     public CreateNewGroup(String GroupName, Context context, List<String> members) {
         Log.v(TAG, "Creating New Group");
         groupName=GroupName;
         mContext=context;
         membersList=members;
+    pd=new ProgressDialog(context);
+//        pd.setTitle("Wait");
+        pd.setMessage("Creating New Group");
     }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        pd.show();
+    }
+
     @Override
     protected Object doInBackground(Object[] params) {
         String groupId="s-box-"+ MainActivity.loginId.toLowerCase()+"-"+groupName.toLowerCase();
@@ -54,5 +68,16 @@ public class CreateNewGroup extends AsyncTask {
             }
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Object o) {
+        super.onPostExecute(o);
+        NewGroup mContext1 = (NewGroup) mContext;
+        mContext1.finish();
+        pd.dismiss();
+
+//        Intent i = new Intent(mContext, MainActivity.class);
+//        mContext.startActivity(i);
     }
 }

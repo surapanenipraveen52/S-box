@@ -44,15 +44,27 @@
         android:layout_below="@+id/addmembers"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="88dp" />
+        android:layout_marginTop="1dp"
+        android:layout_above="@+id/create" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Create"
+        android:id="@+id/create"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/groupname"
+        android:layout_alignEnd="@+id/groupname" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create"
-        android:id="@+id/create"
-        android:layout_alignTop="@+id/listView"
-        android:layout_alignLeft="@+id/listView"
-        android:layout_alignStart="@+id/listView"
-        android:layout_marginTop="154dp" />
+        android:text="Cancel"
+        android:id="@+id/cancel"
+        android:layout_alignBottom="@+id/create"
+        android:layout_toRightOf="@+id/create"
+        android:layout_alignRight="@+id/listView"
+        android:layout_alignEnd="@+id/listView" />
 </RelativeLayout>

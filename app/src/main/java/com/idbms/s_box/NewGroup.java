@@ -26,6 +26,8 @@ public class NewGroup extends Activity {
     private ListView lvItem;
     private ArrayList<String> itemArray;
     private ArrayAdapter<String> itemAdapter;
+    private Button btnCancel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,12 +36,13 @@ public class NewGroup extends Activity {
     }
     private void setUpView() {
 
-
         etUserName = (EditText)this.findViewById(R.id.username);
         etGroupName = (EditText)this.findViewById(R.id.groupname);
         btnAdd = (Button)this.findViewById(R.id.addmembers);
         lvItem = (ListView)this.findViewById(R.id.listView);
         btnCreate = (Button)this.findViewById(R.id.create);
+        btnCancel = (Button)this.findViewById(R.id.cancel);
+
         itemArray = new ArrayList<String>();
         itemArray.clear();
         itemAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,itemArray);
@@ -56,7 +59,14 @@ public class NewGroup extends Activity {
             public void onClick(View v) {
                 if (isInputValid(etGroupName)) {
                   new CreateNewGroup(etGroupName.getText().toString(),NewGroup.this,itemArray).execute();
+
                 }
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

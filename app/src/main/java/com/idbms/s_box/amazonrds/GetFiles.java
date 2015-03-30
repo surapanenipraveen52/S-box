@@ -6,36 +6,32 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by praveen on 3/24/2015.
+ * Created by praveen on 3/25/2015.
  */
-public class GetGroups extends AsyncTask {
-    private static final String TAG = "GetGroups";
+public class GetFiles extends AsyncTask {
+    private static final String TAG = "GetFiles";
     Context mContext;
-    String userName;
-    List<String> listGroups;
+    String groupName;
+    List<String> listFiles;
     public ListView lvItem;
     public ArrayAdapter<String> itemAdapter;
     ProgressDialog pd;
-
-    public GetGroups(String UserName, Context context, ListView lv) {
-        Log.v(TAG,"GetGroups Constructor");
-        userName=UserName;
+    public GetFiles(String groupname, Context context, ListView lv) {
+        Log.v(TAG, "GetGroups Constructor");
+        groupName = groupname;
         mContext=context;
         lvItem=lv;
         pd=new ProgressDialog(context);
 //        pd.setTitle("");
-        pd.setMessage("Fetching Groups Data");
+        pd.setMessage("Fetching Files Data");
     }
-
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -44,8 +40,8 @@ public class GetGroups extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
-        listGroups = new ArrayList<String>();
-        String query="Select GroupName from mydb.UserGroups where userid = '"+userName+"'";
+        listFiles = new ArrayList<String>();
+        String query="select filename from mydb.Files where belongsto = '"+groupName+"'";
         RunQuery runQuery=new RunQuery();
         boolean isConnectionOpen = runQuery.openRDSConnection();
         if(isConnectionOpen){
@@ -56,8 +52,8 @@ public class GetGroups extends AsyncTask {
             try{
                 Log.v(TAG, "Result set is not null");
                 while (resultSet.next()){
-                    String oneGroup=resultSet.getString("GroupName");
-                    listGroups.add(oneGroup);
+                    String oneGroup=resultSet.getString("filename");
+                    listFiles.add(oneGroup);
                 }
                 runQuery.closeConnection();
             }catch (SQLException se){
@@ -69,9 +65,9 @@ public class GetGroups extends AsyncTask {
     }
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
-        Log.v(TAG, "Updating groups");
-        Log.v(TAG, "Updating groups"+listGroups.size());
-        itemAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1,listGroups);
+        Log.v(TAG, "Updating files");
+        Log.v(TAG, "Updating files"+listFiles.size());
+        itemAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1,listFiles);
         //itemAdapter.notifyDataSetChanged();
         lvItem.setAdapter(itemAdapter);
         pd.dismiss();

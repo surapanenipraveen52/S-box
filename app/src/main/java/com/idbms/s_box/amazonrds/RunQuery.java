@@ -38,7 +38,7 @@ public class RunQuery {
 
     }
     public boolean runInsert(String query){
-        Log.v(TAG, "Query is "+query);
+        Log.v(TAG, " Insert Query is "+query);
         try {
             st = con.createStatement();
             Log.v(TAG, "Inserting in to DB");
@@ -46,6 +46,7 @@ public class RunQuery {
             return true;
         }
          catch (SQLException se){
+             Log.v(TAG, se.getMessage());
              closeConnection();
              return false;
         }

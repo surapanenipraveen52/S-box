@@ -6,6 +6,8 @@
     <string name="group_name">Group Name</string>
     <string name="ok">Done</string>
     <string name="cancel">Cancel</string>
-    <string name="title_activity_new_group">NewGroup</string>
+    <string name="title_activity_new_group">New Group</string>
+    <string name="title_activity_new_file">Upload File</string>
     <string name="action_search">Search Groups</string>
+    <string name="title_activity_files_list">FilesList</string>
 </resources>

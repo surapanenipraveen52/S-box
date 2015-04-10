@@ -3,7 +3,9 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+    }
     defaultConfig {
         applicationId "com.idbms.s_box"
         minSdkVersion 14
@@ -26,4 +28,6 @@ dependencies {
     compile files('libs/apache-jakarta-commons-httpclient.jar')
     compile files('libs/aws-java-sdk.jar')
     compile files('libs/mysql-connector-java-3.0.17-ga-bin.jar')
+    compile project(':aFileChooseer')
+    compile files('libs/commons-io-2.4.jar')
 }

@@ -87,11 +87,13 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="appcompat-v7-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="amazon-s3" level="project" />
+    <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
     <orderEntry type="library" exported="" name="mysql-connector-java-3.0.17-ga-bin" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="aws-java-sdk" level="project" />
     <orderEntry type="library" exported="" name="apache-jakarta-commons-httpclient" level="project" />
+    <orderEntry type="module" module-name="aFileChooseer" exported="" />
   </component>
 </module>
 

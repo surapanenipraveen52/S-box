@@ -57,7 +57,6 @@ public class RunQuery {
             st = con.createStatement();
             Log.v(TAG, "Query is "+query);
             resultSet=st.executeQuery(query);
-            Log.v(TAG, "result set is  "+resultSet.toString());
         }catch (SQLException se){
             closeConnection();
             return null;

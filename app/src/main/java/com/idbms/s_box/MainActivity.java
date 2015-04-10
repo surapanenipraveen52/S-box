@@ -41,17 +41,8 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(intent);
             }
         });
-        new GetGroups("surapanenipraveen@gmail.com",this,lv).execute();
+        new GetGroups(loginId,this,lv).execute();
 
-        /*Button newGroup= (Button)findViewById(R.id.newgroup);
-        newGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.v(TAG, "search onclick");
-                Intent i = new Intent(getApplicationContext(),NewGroup.class);
-                startActivity(i);
-            }
-        });*/
     }
 
     @Override
@@ -82,7 +73,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.v(TAG,"onActiivtyResult");
-        new GetGroups("surapanenipraveen@gmail.com",this,lv).execute();
+        new GetGroups(loginId,this,lv).execute();
 
     }
 }

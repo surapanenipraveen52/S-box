@@ -2,6 +2,7 @@ package com.idbms.s_box;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,11 +15,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.idbms.s_box.amazonrds.GetFiles;
+import com.idbms.s_box.amazons3.DownloadFile;
 import com.idbms.s_box.amazons3.UploadFile;
+import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import java.io.File;
 
@@ -28,6 +32,8 @@ public class FilesList extends ActionBarActivity {
     public static String groupName;
     private static int RESULT_LOAD_IMAGE = 1;
     private static final String TAG ="FilesList" ;
+    private static final int REQUEST_CODE = 6384; // onActivityResult request
+
     /*@Override
     public void onContentChanged() {
         super.onContentChanged();
@@ -41,6 +47,18 @@ public class FilesList extends ActionBarActivity {
         setContentView(R.layout.activity_files_list);
         groupName=getIntent().getExtras().getString("groupName");
         lv=(ListView)this.findViewById(R.id.files_list);
+        Log.v(TAG, "File path is " + this.getFilesDir());
+        final Context c=this;
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1,int position, long arg3)
+            {
+                Log.v(TAG, "Clicked id " + lv.getItemAtPosition(position).toString());
+                String fileName = lv.getItemAtPosition(position).toString();
+                new DownloadFile(groupName,fileName, c).execute();
+            }
+        });
         new GetFiles(groupName,this,lv).execute();
     }
 
@@ -61,9 +79,15 @@ public class FilesList extends ActionBarActivity {
                 return true;
             case R.id.new_file:
                 Log.v(TAG, "new file");
-                Intent i = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+                Intent target = FileUtils.createGetContentIntent();
+                // Create the chooser Intent
+                Intent intent = Intent.createChooser(
+                        target, "Choose file");
+                try {
+                    startActivityForResult(intent, REQUEST_CODE);
+                } catch (ActivityNotFoundException e) {
+                    // The reason for the existence of aFileChooser
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -71,26 +95,22 @@ public class FilesList extends ActionBarActivity {
    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+       if (resultCode == RESULT_OK) {
+           if (data != null) {
+               // Get the URI of the selected file
+               final Uri uri = data.getData();
+               try {
+                   // Get the file path from the URI
+                   final String path = FileUtils.getPath(this, uri);
+                   Log.v(TAG, "Selected path si "+path);
+                   String fileName=path.substring(path.lastIndexOf("/")+1);
+                   new UploadFile(path,groupName,MainActivity.loginId,fileName,this,lv).execute();
+               }catch (Exception e) {
+               }
 
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-            Log.v(TAG, "Selected imahe is "+selectedImage);
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
+           }
 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            String fileName=picturePath.substring(picturePath.lastIndexOf("/")+1);
-            Log.v(TAG, "Selected path si "+fileName);
-            new UploadFile(picturePath,groupName,MainActivity.loginId,fileName,this,lv).execute();
-            //ImageView imageView = (ImageView) findViewById(R.id.imgView);
-            //imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-
-        }
-
+           }
 
     }
 }

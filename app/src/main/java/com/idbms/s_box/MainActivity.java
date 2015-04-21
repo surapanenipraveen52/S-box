@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.idbms.s_box.amazonrds.GetGroups;
+import com.idbms.s_box.filesobserverservice.FileModificationService;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -28,7 +29,9 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext=this;
+        //startService(new Intent(MainActivity.this.getApplicationContext(), FileModificationService.class));
         setContentView(R.layout.activity_main);
+        loginId = getIntent().getStringExtra("mail");
         lv=(ListView)this.findViewById(R.id.groups_list);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {

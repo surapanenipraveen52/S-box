@@ -49,6 +49,17 @@ public class DownloadFile extends AsyncTask {
     protected Object doInBackground(Object[] params) {
         Log.v(TAG,"File Namei s"+fileName+"Hro is"+groupName);
         String owner="";
+        File f = new File(Environment.getExternalStorageDirectory()+ "/S-Box",
+                groupName);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+        Log.v(TAG,"path is "+f.getPath());
+        File outputFile= new File(f.getPath()+"/"+fileName);
+        if(outputFile.exists())
+        {
+            new OpenFile().openFile(outputFile,context);
+        }else{
         String query = "select UploadedBy from mydb.Files where BelongsTo ='"+groupName+"' and filename ='"+fileName+"'";
         RunQuery runQuery=new RunQuery();
         boolean isConnectionOpen = runQuery.openRDSConnection();
@@ -76,13 +87,6 @@ public class DownloadFile extends AsyncTask {
             S3Object object = s3client.getObject(request);
             try {
             byte[] bytes = IOUtils.toByteArray(object.getObjectContent());
-            File f = new File(Environment.getExternalStorageDirectory()+ "/S-Box",
-                    groupName);
-            if (!f.exists()) {
-                f.mkdirs();
-            }
-            Log.v(TAG,"path is "+f.getPath());
-            File outputFile= new File(f.getPath()+"/"+fileName);
 
                 FileOutputStream  outputStream = new FileOutputStream(outputFile);
                 outputStream.write(bytes);
@@ -92,6 +96,7 @@ public class DownloadFile extends AsyncTask {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
         }
         return null;
 

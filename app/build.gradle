@@ -23,11 +23,12 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:21.0.3'
     compile files('libs/amazon-s3.jar')
     compile files('libs/apache-jakarta-commons-httpclient.jar')
     compile files('libs/aws-java-sdk.jar')
     compile files('libs/mysql-connector-java-3.0.17-ga-bin.jar')
     compile project(':aFileChooseer')
     compile files('libs/commons-io-2.4.jar')
+    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.google.android.gms:play-services:7.0.0'
 }

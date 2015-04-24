@@ -32,7 +32,6 @@ public class login extends ActionBarActivity {
 
             }
         });
-        mail.setError("This field can not be blank");
     }
 
 

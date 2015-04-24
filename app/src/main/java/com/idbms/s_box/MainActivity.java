@@ -29,7 +29,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext=this;
-        //startService(new Intent(MainActivity.this.getApplicationContext(), FileModificationService.class));
+        startService(new Intent(MainActivity.this.getApplicationContext(), FileModificationService.class));
         setContentView(R.layout.activity_main);
         loginId = getIntent().getStringExtra("mail");
         lv=(ListView)this.findViewById(R.id.groups_list);
@@ -62,11 +62,16 @@ public class MainActivity extends ActionBarActivity {
                 return true;
             case R.id.action_settings:
                 return true;
-            case R.id.new_group:
-                Log.v(TAG, "search onclick");
-                Intent i = new Intent(getApplicationContext(),NewGroup.class);
-                startActivityForResult(i,1);
+            case R.id.new_group: {
+                Intent i = new Intent(getApplicationContext(), NewGroup.class);
+                startActivityForResult(i, 1);
 //                startActivity(i);
+                return true;
+            }
+            case R.id.log_out: {
+               Intent intent = new Intent(getApplicationContext(), login.class);
+                startActivity(intent);
+            }
             default:
                 return super.onOptionsItemSelected(item);
         }

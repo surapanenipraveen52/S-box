@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.idbms.s_box.amazonrds.DeleteFile;
+import com.idbms.s_box.amazonrds.DeleteGroup;
 import com.idbms.s_box.amazonrds.GetGroups;
 import com.idbms.s_box.filesobserverservice.FileModificationService;
 
@@ -42,6 +44,14 @@ public class MainActivity extends ActionBarActivity {
                 Intent intent = new Intent(getApplicationContext(),FilesList.class);
                 intent.putExtra("groupName", lv.getItemAtPosition(position).toString());
                 startActivity(intent);
+            }
+        });
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int pos, long id) {
+                new DeleteGroup(lv.getItemAtPosition(pos).toString(),mContext,lv).execute();
+                return true;
             }
         });
         new GetGroups(loginId,this,lv).execute();

@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.idbms.s_box.amazonrds.DeleteFile;
 import com.idbms.s_box.amazonrds.GetFiles;
 import com.idbms.s_box.amazons3.DownloadFile;
 import com.idbms.s_box.amazons3.UploadFile;
@@ -47,6 +48,7 @@ public class FilesList extends ActionBarActivity {
         setContentView(R.layout.activity_files_list);
         groupName=getIntent().getExtras().getString("groupName");
         lv=(ListView)this.findViewById(R.id.files_list);
+        lv.setLongClickable(true);
         Log.v(TAG, "File path is " + this.getFilesDir());
         final Context c=this;
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -54,9 +56,19 @@ public class FilesList extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1,int position, long arg3)
             {
-                Log.v(TAG, "Clicked id " + lv.getItemAtPosition(position).toString());
                 String fileName = lv.getItemAtPosition(position).toString();
                 new DownloadFile(groupName,fileName, c).execute();
+            }
+        });
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int pos, long id) {
+                // TODO Auto-generated method stub
+
+               new DeleteFile(groupName,lv.getItemAtPosition(pos).toString(),c,lv ).execute();
+
+                return true;
             }
         });
         new GetFiles(groupName,this,lv).execute();
